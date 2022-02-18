@@ -62,6 +62,11 @@ namespace Elemendide_App
                 Text = "rgb color",
                 BackgroundColor = Color.LightCoral,
             };
+            Button trips_btn = new Button
+            {
+                Text= "TripsTrapsnull",
+                BackgroundColor = Color.LightCoral
+            };
 
 
             st.Children.Add(Ent_btn);
@@ -73,6 +78,7 @@ namespace Elemendide_App
             st.Children.Add(image_btn);
             st.Children.Add(svet_btn);
             st.Children.Add(rgb_btn);
+            st.Children.Add(trips_btn);
             st.BackgroundColor = Color.AntiqueWhite;
             Content = st;
             Ent_btn.Clicked += Ent_btn_Clicked;
@@ -83,7 +89,13 @@ namespace Elemendide_App
             frame_btn.Clicked += Frame_btn_Clicked;
             image_btn.Clicked += Image_btn_Clicked;
             svet_btn.Clicked += Svet_btn_Clicked;
-            rgb_btn.Clicked += Rgb_btn_Clicked; 
+            rgb_btn.Clicked += Rgb_btn_Clicked;
+            trips_btn.Clicked += Trips_btn_Clicked;
+        }
+
+        private async void Trips_btn_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new tripstrapsnull());
         }
 
         private async void Rgb_btn_Clicked(object sender, EventArgs e)
