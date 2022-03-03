@@ -16,6 +16,7 @@ namespace Elemendide_App
         Image img;
         public Image_Page()
         {
+            //
             img = new Image { Source = "baklazan.jpg" };
             sw = new Switch
             {

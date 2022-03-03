@@ -73,6 +73,7 @@ namespace Elemendide_App
             bool uus = await DisplayAlert("Uus mäng", "Kas tõesti tahad uus mäng?", "Tahan küll!", "Ei taha!");
             if (uus)
             {
+                
                 Kes_on_esimene();
                 int[,] Tulemused = new int[3, 3];
                 tulemus = -1;
