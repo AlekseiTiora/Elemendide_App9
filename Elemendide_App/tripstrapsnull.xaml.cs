@@ -12,12 +12,13 @@ namespace Elemendide_App
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class tripstrapsnull : ContentPage
     {
-        Grid grid2X1, grid3X3;
+        Grid grid2X1, grid3X3,grid4X4;
         Image b;
-        Button uus_mang;
+        Button uus_mang, reegel_btn, razmer_btn;
         public bool esimene;
         int[,] Tulemused = new int[3, 3];
         int tulemus = -1;
+
 
 
 
@@ -28,11 +29,12 @@ namespace Elemendide_App
             grid2X1 = new Grid
             {
                 VerticalOptions = LayoutOptions.FillAndExpand,
-                BackgroundColor = Color.Blue,
+                BackgroundColor = Color.Green,
                 RowDefinitions =
                 {
 
-                    new RowDefinition { Height = new GridLength(2, GridUnitType.Star) },
+                    new RowDefinition { Height = new GridLength(1
+                    , GridUnitType.Star) },
                     new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
                 },
                 ColumnDefinitions =
@@ -42,18 +44,51 @@ namespace Elemendide_App
                 },
             };
 
+            
+
             Uus_mang();
             uus_mang = new Button()
             {
                 Text = "Uus mäng"
             };
-            grid2X1.Children.Add(uus_mang, 0, 1);
+
+
+            reegel_btn = new Button()
+            {
+                Text = "reegel"
+            };
+
+            razmer_btn = new Button()
+            {
+                Text = "4x4"
+            };
+            razmer_btn.Clicked += Razmer_btn_Clicked;
+
+            StackLayout btn = new StackLayout
+            {
+                Children = { uus_mang, reegel_btn, },
+            };
+
+            reegel_btn.Clicked += Reegel_btn_Clicked;
+            grid2X1.Children.Add(btn, 0, 1);
             uus_mang.Clicked += Uus_mang_Clicked;
             Content = grid2X1;
         }
+
+        private void Razmer_btn_Clicked(object sender, EventArgs e)
+        { 
+
+        }
+
+        private void Reegel_btn_Clicked(object sender, EventArgs e)
+        {
+
+            DisplayAlert("Reegel", "Mängijad panevad kordamööda väljaku vabadele lahtritele 3×3 märke (üks on alati ristid, teine ​​nullid). Võidab see, kes seab esimesena 3 tükki vertikaalselt, horisontaalselt või diagonaalselt ritta. Esimese käigu teeb mängija, kes paneb ristid.","OK");
+        }
+
         public async void Kes_on_esimene()
         {
-            string esimene_valik = await DisplayPromptAsync("Kes on esimene?", "Tee valiku Kollane-1 või Punane-2", initialValue: "1", maxLength: 1, keyboard: Keyboard.Numeric);
+            string esimene_valik = await DisplayPromptAsync("Kes on esimene?", "Tee valiku X-1 või O-2", initialValue: "1", maxLength: 1, keyboard: Keyboard.Numeric);
             if (esimene_valik == "1")
             {
                 esimene = true;
@@ -79,19 +114,19 @@ namespace Elemendide_App
                 tulemus = -1;
                 grid3X3 = new Grid
                 {
-                    BackgroundColor = Color.Blue,
+                    BackgroundColor = Color.White,
                     RowDefinitions =
                 {
 
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                    new RowDefinition { Height = new GridLength(2, GridUnitType.Star) },
+                    new RowDefinition { Height = new GridLength(2, GridUnitType.Star) },
+                    new RowDefinition { Height = new GridLength(2, GridUnitType.Star) }
                 },
                     ColumnDefinitions =
                 {
-                   new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-                   new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
-                   new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) }
+                   new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
+                   new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
+                   new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) }
 
                 }
                 };
@@ -120,8 +155,8 @@ namespace Elemendide_App
             {
                 tulemus = 1;
             }
-            else if (Tulemused[0, 0] == 1 && Tulemused[1, 0] == 1 && Tulemused[2, 0] == 1 || Tulemused[0, 1] == 1 && Tulemused[1, 1] == 1 && Tulemused[2, 1] == 1 ||
-                Tulemused[0, 2] == 1 && Tulemused[1, 2] == 1 && Tulemused[2, 2] == 1)
+            else if (Tulemused[0, 0] == 1 && Tulemused[0, 1] == 1 && Tulemused[0,2] == 1 || Tulemused[1, 0] == 1 && Tulemused[1, 1] == 1 && Tulemused[1, 2] == 1 ||
+                Tulemused[2, 0] == 1 && Tulemused[2, 1] == 1 && Tulemused[2, 2] == 1)
             {
                 tulemus = 1;
             }
@@ -129,6 +164,23 @@ namespace Elemendide_App
             {
                 tulemus = 1;
             }
+
+            else if (Tulemused[0, 0] == 2 && Tulemused[1, 0] == 2 && Tulemused[2, 0] == 2 || Tulemused[0, 1] == 2 && Tulemused[1, 1] == 2 && Tulemused[2, 1] == 2 ||
+            Tulemused[0, 2] == 2 && Tulemused[1, 2] == 2 && Tulemused[2, 2] == 2)
+            {
+                tulemus = 2;
+            }
+
+            else if (Tulemused[0, 0] == 2 && Tulemused[0, 1] == 2 && Tulemused[0, 2] == 2 || Tulemused[1, 0] == 2 && Tulemused[1, 1] == 2 && Tulemused[1, 2] == 2 ||
+                Tulemused[2, 0] == 2 && Tulemused[2, 1] == 2 && Tulemused[2, 2] == 2)
+            {
+                tulemus = 2;
+            }
+            else if (Tulemused[0, 0] == 2 && Tulemused[1, 1] == 2 && Tulemused[2, 2] == 2 || Tulemused[0, 2] == 2 && Tulemused[1, 1] == 2 && Tulemused[2, 0] == 2)
+            {
+                tulemus = 2;
+            }
+
             return tulemus;
         }
         public void Lopp()
@@ -139,7 +191,7 @@ namespace Elemendide_App
                 DisplayAlert("Võit", "Esimene on võitja! ", "ok");
                 //tulemus = 2;
             }
-            else if (tulemus == 0)
+            else if (tulemus == 2)
             {
                 DisplayAlert("Võit", "Teine on võitja! ", "ok");
                 //tulemus = 2;
@@ -161,7 +213,7 @@ namespace Elemendide_App
             {
                 b = new Image { Source = "nolik.png" };
                 esimene = true;
-                Tulemused[r, c] = 0;
+                Tulemused[r, c] = 2;
             }
             grid3X3.Children.Add(b, c, r);
             Lopp();
