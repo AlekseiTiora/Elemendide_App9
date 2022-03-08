@@ -12,12 +12,14 @@ namespace Elemendide_App
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class tripstrapsnull : ContentPage
     {
-        Grid grid2X1, grid3X3,grid4X4;
+        Grid grid2X1, grid3X3;
         Image b;
-        Button uus_mang, reegel_btn, razmer_btn;
+        Button uus_mang, reegel_btn, stil_btn;
         public bool esimene;
         int[,] Tulemused = new int[3, 3];
-        int tulemus = -1;
+        int tulemus = 0;
+        string nolik = "nolik.png";
+        string krestik = "krestik.png";
 
 
 
@@ -58,15 +60,15 @@ namespace Elemendide_App
                 Text = "reegel"
             };
 
-            razmer_btn = new Button()
+            stil_btn = new Button()
             {
-                Text = "4x4"
+                Text = "stil"
             };
-            razmer_btn.Clicked += Razmer_btn_Clicked;
+            stil_btn.Clicked += stil_btn_Clicked;
 
             StackLayout btn = new StackLayout
             {
-                Children = { uus_mang, reegel_btn, },
+                Children = { uus_mang, reegel_btn,stil_btn },
             };
 
             reegel_btn.Clicked += Reegel_btn_Clicked;
@@ -75,8 +77,23 @@ namespace Elemendide_App
             Content = grid2X1;
         }
 
-        private void Razmer_btn_Clicked(object sender, EventArgs e)
-        { 
+        private async void stil_btn_Clicked(object sender, EventArgs e)
+        {
+            string theme = await DisplayPromptAsync("Teema", "default teemat-1, 2- tema", initialValue: "1", maxLength: 1, keyboard: Keyboard.Numeric);
+            if (theme == "1")
+            {
+                grid2X1.BackgroundColor = Color.Green;
+                grid3X3.BackgroundColor = Color.Green;
+                nolik = "nolik.png";
+                krestik = "krestik.png";
+            }
+            else if (theme == "2")
+            {
+                grid2X1.BackgroundColor = Color.Orange;
+                grid3X3.BackgroundColor = Color.Orange;
+                nolik = "bo.png";
+                krestik = "bx.png";
+            }
 
         }
 
@@ -101,6 +118,7 @@ namespace Elemendide_App
         private void Uus_mang_Clicked(object sender, EventArgs e)
         {
             Uus_mang();
+            grid3X3.IsEnabled = true;
         }
 
         public async void Uus_mang()
@@ -108,13 +126,13 @@ namespace Elemendide_App
             bool uus = await DisplayAlert("Uus mäng", "Kas tõesti tahad uus mäng?", "Tahan küll!", "Ei taha!");
             if (uus)
             {
-                
+
                 Kes_on_esimene();
-                int[,] Tulemused = new int[3, 3];
+                Tulemused = new int[3, 3];
                 tulemus = -1;
                 grid3X3 = new Grid
                 {
-                    BackgroundColor = Color.White,
+                    BackgroundColor = Color.Green,
                     RowDefinitions =
                 {
 
@@ -180,6 +198,10 @@ namespace Elemendide_App
             {
                 tulemus = 2;
             }
+            else
+            {
+                tulemus = 0;
+            }
 
             return tulemus;
         }
@@ -189,11 +211,13 @@ namespace Elemendide_App
             if (tulemus == 1)
             {
                 DisplayAlert("Võit", "Esimene on võitja! ", "ok");
+                grid3X3.IsEnabled = false;
                 //tulemus = 2;
             }
             else if (tulemus == 2)
             {
                 DisplayAlert("Võit", "Teine on võitja! ", "ok");
+                grid3X3.IsEnabled = false;
                 //tulemus = 2;
             }
         }
@@ -205,13 +229,13 @@ namespace Elemendide_App
             var c = Grid.GetColumn(b);
             if (esimene == true)
             {
-                b = new Image { Source = "krestik.png" };
+                b.Source = krestik;
                 esimene = false;
                 Tulemused[r, c] = 1;
             }
             else
             {
-                b = new Image { Source = "nolik.png" };
+                b.Source = nolik;
                 esimene = true;
                 Tulemused[r, c] = 2;
             }
