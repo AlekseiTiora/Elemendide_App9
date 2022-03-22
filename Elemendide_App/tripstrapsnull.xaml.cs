@@ -14,10 +14,13 @@ namespace Elemendide_App
     {
         Grid grid2X1, grid3X3;
         Image b;
-        Button uus_mang, reegel_btn, stil_btn;
+        Button uus_mang, reegel_btn, stil_btn, razmer_btn, music_btn;
         public bool esimene;
+        public bool razmere;
         int[,] Tulemused = new int[3, 3];
         int tulemus = 0;
+        public int F = 0;
+        int razmerpole = 0;
         string nolik = "nolik.png";
         string krestik = "krestik.png";
 
@@ -35,9 +38,8 @@ namespace Elemendide_App
                 RowDefinitions =
                 {
 
-                    new RowDefinition { Height = new GridLength(1
-                    , GridUnitType.Star) },
-                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                    new RowDefinition { Height = new GridLength(2, GridUnitType.Star) },
+                    new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
                 },
                 ColumnDefinitions =
                 {
@@ -60,21 +62,76 @@ namespace Elemendide_App
                 Text = "reegel"
             };
 
+            razmer_btn = new Button()
+            {
+                Text = "Suurus"
+            };
+
+            music_btn = new Button()
+            {
+                Text = "Audio"
+            };
+
             stil_btn = new Button()
             {
                 Text = "stil"
             };
             stil_btn.Clicked += stil_btn_Clicked;
 
+
+
             StackLayout btn = new StackLayout
             {
-                Children = { uus_mang, reegel_btn,stil_btn },
+                Children = { uus_mang, reegel_btn,stil_btn, razmer_btn, music_btn }
             };
+
+
 
             reegel_btn.Clicked += Reegel_btn_Clicked;
             grid2X1.Children.Add(btn, 0, 1);
             uus_mang.Clicked += Uus_mang_Clicked;
+            razmer_btn.Clicked += Razmer_btn_Clicked;
+            music_btn.Clicked += Music_btn_Clicked;
             Content = grid2X1;
+        }
+        int music = 0;
+        private void Music_btn_Clicked(object sender, EventArgs e)
+        {
+            if (music == 0)
+            {
+                DependencyService.Get<IAudio>().PlayAudioFile("music.mp3");
+                music++;
+            }
+            else if (music == 1)
+            {
+                DependencyService.Get<IAudio>().Stop("music.mp3");
+                music = 0;
+            }
+
+
+        }
+
+        public async void Razmer_btn_Clicked(object sender, EventArgs e)
+        {
+
+            string razmer = await DisplayPromptAsync("Kas sa tahad 3x3 või 4x4?", "Tee valiku 3x3-1 või 4x4-2", initialValue: "1", maxLength: 1, keyboard: Keyboard.Numeric);
+            if (razmer == "1")
+            {
+                razmere = true;
+                Uus_mang();
+
+            }
+            else if (razmer == "2")
+            {
+                razmere = false;
+                Uus_mang();
+
+            }
+            else
+            {
+                razmere = true;
+            }
+
         }
 
         private async void stil_btn_Clicked(object sender, EventArgs e)
@@ -115,6 +172,7 @@ namespace Elemendide_App
                 esimene = false;
             }
         }
+
         private void Uus_mang_Clicked(object sender, EventArgs e)
         {
             Uus_mang();
@@ -128,29 +186,27 @@ namespace Elemendide_App
             {
 
                 Kes_on_esimene();
-                Tulemused = new int[3, 3];
                 tulemus = -1;
+
+                if (razmere == true)
+                {
+                    Tulemused = new int[3, 3];
+                    razmerpole = 3;
+                }
+                else
+                {
+                    Tulemused = new int[4, 4];
+                    razmerpole = 4;
+                }
+
                 grid3X3 = new Grid
                 {
                     BackgroundColor = Color.Green,
-                    RowDefinitions =
-                {
 
-                    new RowDefinition { Height = new GridLength(2, GridUnitType.Star) },
-                    new RowDefinition { Height = new GridLength(2, GridUnitType.Star) },
-                    new RowDefinition { Height = new GridLength(2, GridUnitType.Star) }
-                },
-                    ColumnDefinitions =
-                {
-                   new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
-                   new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) },
-                   new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) }
-
-                }
                 };
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < razmerpole; i++)
                 {
-                    for (int j = 0; j < 3; j++)
+                    for (int j = 0; j < razmerpole; j++)
                     {
                         b = new Image { Source = "Nimetu.png" };
                         grid3X3.Children.Add(b, j, i);
@@ -182,7 +238,7 @@ namespace Elemendide_App
             {
                 tulemus = 1;
             }
-
+            //nol
             else if (Tulemused[0, 0] == 2 && Tulemused[1, 0] == 2 && Tulemused[2, 0] == 2 || Tulemused[0, 1] == 2 && Tulemused[1, 1] == 2 && Tulemused[2, 1] == 2 ||
             Tulemused[0, 2] == 2 && Tulemused[1, 2] == 2 && Tulemused[2, 2] == 2)
             {
@@ -198,26 +254,102 @@ namespace Elemendide_App
             {
                 tulemus = 2;
             }
+            //
             else
             {
-                tulemus = 0;
+                tulemus = -1;
+            }
+
+            if (checkTie())
+            {
+                DisplayAlert("Mängu lõpp", "mäng on viigis", "OK");
             }
 
             return tulemus;
         }
+        private bool checkTie()
+        {
+            for (int i = 0; i < Tulemused.GetLength(0); i++)
+            {
+                for (int j = 0; j < Tulemused.GetLength(1); j++)
+                {
+                    if (Tulemused[i, j] == 2)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public int Kontroll4na4()
+        {
+            if (Tulemused[0, 0] == 1 && Tulemused[1, 0] == 1 && Tulemused[2, 0] == 1 && Tulemused[3, 0] == 1 || Tulemused[0, 1] == 1 && Tulemused[1, 1] == 1 &&
+                Tulemused[2, 1] == 1 && Tulemused[3, 1] == 1 || Tulemused[0, 2] == 1 && Tulemused[1, 2] == 1 && Tulemused[2, 2] == 1 && Tulemused[3, 2] == 1 || Tulemused[0, 3] == 1 && Tulemused[1, 3] == 1 && Tulemused[2, 3] == 1 && Tulemused[3, 3] == 1)
+            {
+                tulemus = 1;
+            }
+            else if (Tulemused[0, 0] == 1 && Tulemused[0, 1] == 1 && Tulemused[0, 2] == 1 && Tulemused[0, 3] == 1 || Tulemused[1, 0] == 1 && Tulemused[1, 1] == 1 &&
+                Tulemused[1, 2] == 1 && Tulemused[1, 3] == 1 || Tulemused[2, 0] == 1 && Tulemused[2, 1] == 1 && Tulemused[2, 2] == 1 && Tulemused[2, 3] == 1 || Tulemused[3, 0] == 1 && Tulemused[3, 1] == 1 && Tulemused[3, 2] == 1 && Tulemused[3, 3] == 1)
+            {
+                tulemus = 1;
+            }
+            else if (Tulemused[0, 0] == 1 && Tulemused[1, 1] == 1 && Tulemused[2, 2] == 1 && Tulemused[3, 3] == 1 || Tulemused[0, 3] == 1 && Tulemused[1, 2] == 1 &&
+                Tulemused[2, 1] == 1 && Tulemused[3, 0] == 1)
+            {
+                tulemus = 1;
+            }
+
+            //nol
+            else if (Tulemused[0, 0] == 2 && Tulemused[1, 0] == 2 && Tulemused[2, 0] == 2 && Tulemused[3, 0] == 2 || Tulemused[0, 1] == 2 && Tulemused[1, 1] == 2 &&
+                Tulemused[2, 1] == 2 && Tulemused[3, 1] == 2 || Tulemused[0, 2] == 2 && Tulemused[1, 2] == 2 && Tulemused[2, 2] == 2 && Tulemused[3, 2] == 2 || Tulemused[0, 3] == 2 && Tulemused[1, 3] == 2 && Tulemused[2, 3] == 2 && Tulemused[3, 3] == 2)
+            {
+                tulemus = 2;
+            }
+            else if (Tulemused[0, 0] == 2 && Tulemused[0, 1] == 2 && Tulemused[0, 2] == 2 && Tulemused[0, 3] == 2 || Tulemused[1, 0] == 2 && Tulemused[1, 1] == 2 &&
+                Tulemused[1, 2] == 2 && Tulemused[1, 3] == 2 || Tulemused[2, 0] == 2 && Tulemused[2, 1] == 2 && Tulemused[2, 2] == 2 && Tulemused[2, 3] == 2 || Tulemused[3, 0] == 2 && Tulemused[3, 1] == 2 && Tulemused[3, 2] == 2 && Tulemused[3, 3] == 2)
+            {
+                tulemus = 2;
+            }
+            else if (Tulemused[0, 0] == 2 && Tulemused[1, 1] == 2 && Tulemused[2, 2] == 2 && Tulemused[3, 3] == 2 || Tulemused[0, 3] == 2 && Tulemused[1, 2] == 2 &&
+                Tulemused[2, 1] == 2 && Tulemused[3, 0] == 2)
+            {
+                tulemus = 2;
+            }
+            else if (Tulemused[0, 0] == 4 && Tulemused[1, 0] == 4 && Tulemused[2, 0] == 4 && Tulemused[3, 0] == 4 && Tulemused[0, 1] == 4 && Tulemused[1, 1] == 4 &&
+                Tulemused[2, 1] == 4 && Tulemused[3, 1] == 4 && Tulemused[0, 2] == 4 && Tulemused[1, 2] == 4 && Tulemused[2, 2] == 4 && Tulemused[3, 2] == 4 && Tulemused[0, 3] == 4 && Tulemused[1, 3] == 4 && Tulemused[2, 3] == 4 && Tulemused[3, 3] == 4)
+            {
+                tulemus = -3;
+            }
+            /*else
+            {
+                tulemus = -3;
+            }*/
+            return tulemus;
+        }
         public void Lopp()
         {
-            tulemus = Kontroll();
+            if (razmere == true)
+            {
+                tulemus = Kontroll();
+            }
+            else if (razmere == false)
+            {
+                tulemus = Kontroll4na4();
+            }
+
             if (tulemus == 1)
             {
                 DisplayAlert("Võit", "Esimene on võitja! ", "ok");
                 grid3X3.IsEnabled = false;
+                razmer_btn.IsEnabled = true;
                 //tulemus = 2;
             }
             else if (tulemus == 2)
             {
                 DisplayAlert("Võit", "Teine on võitja! ", "ok");
                 grid3X3.IsEnabled = false;
+                razmer_btn.IsEnabled = true;
                 //tulemus = 2;
             }
         }
