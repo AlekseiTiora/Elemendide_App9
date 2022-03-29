@@ -17,7 +17,8 @@ namespace Elemendide_App
         StackLayout st;
         Entry entry;
         Button btn, btn2, btn3, btn4;
-        List<string> lehed = new List<string>()  { "https://tahvel.edu.ee/#/", "https://moodle.edu.ee/", "https://www.tthk.ee/", "https://www.google.com/" };
+        string key = "";
+        List<string> lehed = new List<string>()  { "https://tahvel.edu.ee/#/", "https://moodle.edu.ee/", "https://www.tthk.ee/", "https://www.google.com/", newUrl };
         public Picker_Page()
         {
             picker = new Picker
@@ -34,14 +35,8 @@ namespace Elemendide_App
 
             entry = new Entry()
             {
-                Text = "Sisesta siia url"
+                Placeholder = "Sisesta siia url"
 
-            };
-            btn = new Button
-            {
-                Text = "Uus webilehed",
-                HorizontalOptions = LayoutOptions.End,
-                VerticalOptions = LayoutOptions.End
             };
             btn2 = new Button
             {
@@ -68,7 +63,7 @@ namespace Elemendide_App
             btn2.Clicked += Btn2_Clicked;
             btn3.Clicked += Btn3_Clicked;
             entry.TextChanged += Ed_TextChanged;
-            st = new StackLayout { Children = { picker, btn, btn2, btn3, btn4 } };
+            st = new StackLayout { Children = { picker, entry, btn2, btn3, btn4 } };
             Content = st;
         }
 
@@ -78,7 +73,7 @@ namespace Elemendide_App
             char key = e.NewTextValue?.Last() ?? ' ';
             webView = new WebView
             {
-                //Source = new UrlWebViewSource { Url = key },
+                Source = new UrlWebViewSource { Url = key },
                 VerticalOptions = LayoutOptions.FillAndExpand,
             };
             st.Children.Add(webView);
