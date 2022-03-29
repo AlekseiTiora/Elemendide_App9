@@ -111,13 +111,13 @@
     <AndroidResource Include="Resources\drawable\bo.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Nimetu.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\music.mp3" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\music1.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Nimetu.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <ProjectExtensions>

@@ -55,6 +55,7 @@ namespace Elemendide_App
         int i = 0;
         private void Ed_TextChanged(object sender, TextChangedEventArgs e)
         {
+
             ed.TextChanged -= Ed_TextChanged;
             char key = e.NewTextValue?.Last() ?? ' ';
 

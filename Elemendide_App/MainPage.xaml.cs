@@ -67,6 +67,12 @@ namespace Elemendide_App
                 Text= "TripsTrapsnull",
                 BackgroundColor = Color.LightCoral
             };
+            Button table_page = new Button
+            {
+                Text = "table_page",
+                BackgroundColor = Color.LawnGreen
+            };
+
 
 
             st.Children.Add(Ent_btn);
@@ -79,6 +85,7 @@ namespace Elemendide_App
             st.Children.Add(svet_btn);
             st.Children.Add(rgb_btn);
             st.Children.Add(trips_btn);
+            st.Children.Add(table_page);
             st.BackgroundColor = Color.AntiqueWhite;
             Content = st;
             Ent_btn.Clicked += Ent_btn_Clicked;
@@ -91,6 +98,12 @@ namespace Elemendide_App
             svet_btn.Clicked += Svet_btn_Clicked;
             rgb_btn.Clicked += Rgb_btn_Clicked;
             trips_btn.Clicked += Trips_btn_Clicked;
+            table_page.Clicked += Table_page_Clicked;
+        }
+
+        private async void Table_page_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Picker_Page());
         }
 
         private async void Trips_btn_Clicked(object sender, EventArgs e)
