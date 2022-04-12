@@ -18,7 +18,7 @@ namespace Elemendide_App
         Entry entry;
         Button btn, btn2, btn3, btn4;
         string key = "";
-        List<string> lehed = new List<string>()  { "https://tahvel.edu.ee/#/", "https://moodle.edu.ee/", "https://www.tthk.ee/", "https://www.google.com/", newUrl };
+        List<string> lehed = new List<string>() { "https://tahvel.edu.ee/#/", "https://moodle.edu.ee/", "https://www.tthk.ee/", "https://www.google.com/", }; //newUrl };
         public Picker_Page()
         {
             picker = new Picker
@@ -73,8 +73,8 @@ namespace Elemendide_App
             char key = e.NewTextValue?.Last() ?? ' ';
             webView = new WebView
             {
-                Source = new UrlWebViewSource { Url = key },
-                VerticalOptions = LayoutOptions.FillAndExpand,
+                /*Source = new UrlWebViewSource { Url = key },
+                VerticalOptions = LayoutOptions.FillAndExpand,*/
             };
             st.Children.Add(webView);
         }

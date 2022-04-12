@@ -72,6 +72,11 @@ namespace Elemendide_App
                 Text = "table_page",
                 BackgroundColor = Color.LawnGreen
             };
+            Button maakonad_btn = new Button
+            {
+                Text = "maakonad",
+                BackgroundColor = Color.LawnGreen
+            };
 
 
 
@@ -86,6 +91,7 @@ namespace Elemendide_App
             st.Children.Add(rgb_btn);
             st.Children.Add(trips_btn);
             st.Children.Add(table_page);
+            st.Children.Add(maakonad_btn);
             st.BackgroundColor = Color.AntiqueWhite;
             Content = st;
             Ent_btn.Clicked += Ent_btn_Clicked;
@@ -99,6 +105,12 @@ namespace Elemendide_App
             rgb_btn.Clicked += Rgb_btn_Clicked;
             trips_btn.Clicked += Trips_btn_Clicked;
             table_page.Clicked += Table_page_Clicked;
+            maakonad_btn.Clicked += Maakonad_btn_Clicked;
+        }
+
+        private async void Maakonad_btn_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new maakonad());
         }
 
         private async void Table_page_Clicked(object sender, EventArgs e)
