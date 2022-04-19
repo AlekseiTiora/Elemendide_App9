@@ -77,6 +77,11 @@ namespace Elemendide_App
                 Text = "maakonad",
                 BackgroundColor = Color.LawnGreen
             };
+            Button horoskop_btn = new Button
+            {
+                Text = "horoskop",
+                BackgroundColor = Color.LawnGreen
+            };
 
 
 
@@ -92,6 +97,7 @@ namespace Elemendide_App
             st.Children.Add(trips_btn);
             st.Children.Add(table_page);
             st.Children.Add(maakonad_btn);
+            st.Children.Add(horoskop_btn);
             st.BackgroundColor = Color.AntiqueWhite;
             Content = st;
             Ent_btn.Clicked += Ent_btn_Clicked;
@@ -106,6 +112,12 @@ namespace Elemendide_App
             trips_btn.Clicked += Trips_btn_Clicked;
             table_page.Clicked += Table_page_Clicked;
             maakonad_btn.Clicked += Maakonad_btn_Clicked;
+            horoskop_btn.Clicked += Horoskop_btn_Clicked;
+        }
+
+        private async void Horoskop_btn_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new horoskop());
         }
 
         private async void Maakonad_btn_Clicked(object sender, EventArgs e)
