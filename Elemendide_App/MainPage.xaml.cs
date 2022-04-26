@@ -14,7 +14,7 @@ namespace Elemendide_App
         {
             //InitializeComponent();
             StackLayout st = new StackLayout();
-            Button Ent_btn = new Button()
+           /* Button Ent_btn = new Button()
             {
                 Text = "Entry",
                 BackgroundColor = Color.LightCoral,
@@ -24,7 +24,7 @@ namespace Elemendide_App
             {
                 Text = "Timer",
                 BackgroundColor = Color.LightCoral,
-            };
+            };*/
             Button cliker = new Button()
             {
                 Text = "Clicker",
@@ -37,16 +37,16 @@ namespace Elemendide_App
                 BackgroundColor = Color.LightCoral,
             };
 
-            Button SS_btn = new Button
+            /*Button SS_btn = new Button
             {
                 Text = "Stepper/Slider",
                 BackgroundColor = Color.LightCoral,
-            };
-            Button frame_btn = new Button
+            };*/
+           /* Button frame_btn = new Button
             {
                 Text = "Frame",
                 BackgroundColor = Color.LightCoral,
-            };
+            };*/
             Button image_btn = new Button
             {
                 Text = "image",
@@ -82,15 +82,20 @@ namespace Elemendide_App
                 Text = "horoskop",
                 BackgroundColor = Color.LawnGreen
             };
+            Button list_page = new Button
+            {
+                Text = "List Page",
+                BackgroundColor = Color.LawnGreen
+            };
 
 
 
-            st.Children.Add(Ent_btn);
-            st.Children.Add(Timer_btn);
+            /*st.Children.Add(Ent_btn);
+            st.Children.Add(Timer_btn);*/
             st.Children.Add(cliker);
             st.Children.Add(Date_btn);
-            st.Children.Add(SS_btn);
-            st.Children.Add(frame_btn);
+            //st.Children.Add(SS_btn);
+            //st.Children.Add(frame_btn);
             st.Children.Add(image_btn);
             st.Children.Add(svet_btn);
             st.Children.Add(rgb_btn);
@@ -98,14 +103,15 @@ namespace Elemendide_App
             st.Children.Add(table_page);
             st.Children.Add(maakonad_btn);
             st.Children.Add(horoskop_btn);
+            st.Children.Add(list_page);
             st.BackgroundColor = Color.AntiqueWhite;
             Content = st;
-            Ent_btn.Clicked += Ent_btn_Clicked;
-            Timer_btn.Clicked += Timer_btn_Clicked;
+            /*Ent_btn.Clicked += Ent_btn_Clicked;
+            Timer_btn.Clicked += Timer_btn_Clicked;*/
             cliker.Clicked += Cliker_Clicked;
             Date_btn.Clicked += Date_btn_Clicked;
-            SS_btn.Clicked += SS_btn_Clicked;
-            frame_btn.Clicked += Frame_btn_Clicked;
+           // SS_btn.Clicked += SS_btn_Clicked;
+            //frame_btn.Clicked += Frame_btn_Clicked;
             image_btn.Clicked += Image_btn_Clicked;
             svet_btn.Clicked += Svet_btn_Clicked;
             rgb_btn.Clicked += Rgb_btn_Clicked;
@@ -113,6 +119,12 @@ namespace Elemendide_App
             table_page.Clicked += Table_page_Clicked;
             maakonad_btn.Clicked += Maakonad_btn_Clicked;
             horoskop_btn.Clicked += Horoskop_btn_Clicked;
+            list_page.Clicked += List_page_Clicked;
+        }
+
+        private async void List_page_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new List_Page());
         }
 
         private async void Horoskop_btn_Clicked(object sender, EventArgs e)
