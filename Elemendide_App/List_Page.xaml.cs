@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,17 +13,17 @@ namespace Elemendide_App
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class List_Page : ContentPage
     {
-        public List<Telefon> telefons { get; set; }
+        public ObservableCollection<Telefon> telefons { get; set; }
         Label lbl_list;
         ListView list;
         public List_Page()
         {
-            telefons = new List<Telefon>
+            telefons = new ObservableCollection<Telefon>
             {
-                new Telefon {Nimetus="Samsung Galaxy S22", Tootja ="Samsung", Hind=1249},
-                new Telefon {Nimetus="Xiaomi Mi 11 Lite 5G NE", Tootja ="Xiaomi", Hind=399},
-                new Telefon {Nimetus="Xiaomi Mi 11 Lite 5G", Tootja ="Xiaomi", Hind=339},
-                new Telefon {Nimetus="iPhnoe 13", Tootja ="Apple", Hind=1179}
+                new Telefon {Nimetus="Samsung Galaxy S22", Tootja ="Samsung", Hind=1249, Pilt ="s22.png" },
+                new Telefon {Nimetus="Sony XA1", Tootja ="Sony", Hind=250, Pilt ="xa1.png" },
+                new Telefon {Nimetus="Xiaomi Mi 11 Lite 5G", Tootja ="Xiaomi", Hind=339, Pilt ="lite11.png" },
+                new Telefon {Nimetus="iPhone 13", Tootja ="Apple", Hind=1179, Pilt ="iphone.png" }
             };
             lbl_list = new Label
             {
@@ -36,24 +37,12 @@ namespace Elemendide_App
                 ItemsSource = telefons,
                 ItemTemplate = new DataTemplate(()=>
                 {
-                    Label nimetus = new Label { FontSize = 20 };
-                    nimetus.SetBinding(Label.TextProperty, "Nimetus");
-
-                    Label tootja = new Label();
-                    tootja.SetBinding(Label.TextProperty, "Tootja");
-
-                    Label hind = new Label();
-                    hind.SetBinding(Label.TextProperty, "Hind");
-
-                    return new ViewCell
-                    {
-                        View = new StackLayout
-                        {
-                            Padding = new Thickness(0,5),
-                            Orientation = StackOrientation.Vertical,
-                            Children = {nimetus,tootja,hind}
-                        }
-                    };
+                    ImageCell imageCell = new ImageCell { TextColor = Color.Red, DetailColor = Color.Green };
+                    imageCell.SetBinding(ImageCell.TextProperty, "Nimetus");
+                    Binding companyBinding = new Binding { Path = "Tootja", StringFormat = "Tore telefon firmalt {0}" };
+                    imageCell.SetBinding(ImageCell.DetailProperty, companyBinding);
+                    imageCell.SetBinding(ImageCell.ImageSourceProperty, "Pilt");
+                    return imageCell;
                 })
             };
             //list.ItemSelected += List_ItemSelected;
