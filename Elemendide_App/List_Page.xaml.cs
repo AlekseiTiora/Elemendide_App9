@@ -16,6 +16,7 @@ namespace Elemendide_App
         public ObservableCollection<Telefon> telefons { get; set; }
         Label lbl_list;
         ListView list;
+        Button Kustuta_btn, lisa_btn;
         public List_Page()
         {
             telefons = new ObservableCollection<Telefon>
@@ -31,8 +32,22 @@ namespace Elemendide_App
                 HorizontalOptions = LayoutOptions.Center,
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             };
+            Kustuta_btn = new Button
+            {
+                Text="Kustuta telefon"
+            };
+            Kustuta_btn.Clicked += Kustuta_btn_Clicked;
+            lisa_btn = new Button
+            {
+                Text = "Lisa telefon"
+            };
+            lisa_btn.Clicked += Lisa_btn_Clicked;
             list = new ListView
             {
+                SeparatorColor = Color.Aqua,
+                Header = "Minu kolektion:",
+                Footer = DateTime.Now.ToString("T"),
+
                 HasUnevenRows = true,
                 ItemsSource = telefons,
                 ItemTemplate = new DataTemplate(()=>
@@ -47,7 +62,23 @@ namespace Elemendide_App
             };
             //list.ItemSelected += List_ItemSelected;
             list.ItemTapped += List_ItemTapped;
-            this.Content = new StackLayout { Children = { lbl_list, list } };
+            this.Content = new StackLayout { Children = { 
+                    lbl_list, list,Kustuta_btn,lisa_btn } };
+        }
+
+        private void Lisa_btn_Clicked(object sender, EventArgs e)
+        {
+            telefons.Add(new Telefon { Nimetus = "Telefon", Tootja = "Tootja", Hind = 1 });
+        }
+
+        private void Kustuta_btn_Clicked(object sender, EventArgs e)
+        {
+            Telefon phone = list.SelectedItem as Telefon;
+            if(phone !=null)
+            {
+                telefons.Remove(phone);
+                list.SelectedItem = null;
+            }
         }
 
         private async void List_ItemTapped(object sender, ItemTappedEventArgs e)
