@@ -88,6 +88,11 @@ namespace Elemendide_App
                 BackgroundColor = Color.LawnGreen
             };
 
+            Button europa_btn = new Button
+            {
+                Text = "europariigid",
+                BackgroundColor = Color.LawnGreen
+            };
 
 
             /*st.Children.Add(Ent_btn);
@@ -104,6 +109,7 @@ namespace Elemendide_App
             st.Children.Add(maakonad_btn);
             st.Children.Add(horoskop_btn);
             st.Children.Add(list_page);
+            st.Children.Add(europa_btn);
             st.BackgroundColor = Color.AntiqueWhite;
             Content = st;
             /*Ent_btn.Clicked += Ent_btn_Clicked;
@@ -120,6 +126,12 @@ namespace Elemendide_App
             maakonad_btn.Clicked += Maakonad_btn_Clicked;
             horoskop_btn.Clicked += Horoskop_btn_Clicked;
             list_page.Clicked += List_page_Clicked;
+            europa_btn.Clicked += Europa_btn_Clicked;
+        }
+
+        private async void Europa_btn_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new europariigid());
         }
 
         private async void List_page_Clicked(object sender, EventArgs e)
