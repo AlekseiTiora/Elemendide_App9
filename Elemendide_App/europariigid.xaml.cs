@@ -21,10 +21,10 @@ namespace Elemendide_App
         {
             riigi = new ObservableCollection<riigid>
             {
-                new riigid { Nimetus = "Soome", Pealinn = "Helsingi", Elanikkond = 1328439, Pilt = "finland.png" },
-                new riigid { Nimetus = "Estonia", Pealinn = "Tallinn", Elanikkond = 5595981, Pilt = "estonia.png" },
-                new riigid { Nimetus = "Venemaa", Pealinn = "Moskva", Elanikkond = 146044190, Pilt = "venemaa.png" },
-                new riigid { Nimetus = "Ukraine", Pealinn = "Kiev", Elanikkond = 41167336, Pilt = "ukraine.png" }
+                new riigid { Nimetus = "Soome", Pealinn = "Helsingi", Elanikkond = "1 328 439", Pilt = "finland.png" },
+                new riigid { Nimetus = "Estonia", Pealinn = "Tallinn", Elanikkond = "5 595 981", Pilt = "estonia.png" },
+                new riigid { Nimetus = "Venemaa", Pealinn = "Moskva", Elanikkond = "145 478 097", Pilt = "venemaa.png" },
+                new riigid { Nimetus = "Ukraine", Pealinn = "Kiev", Elanikkond = "41 167 336", Pilt = "ukraine.png" }
             };
             lbl_list = new Label
             {
@@ -34,12 +34,12 @@ namespace Elemendide_App
             };
             Kustuta_btn = new Button
             {
-                Text = "Kustuta telefon"
+                Text = "Kustuta riik"
             };
             Kustuta_btn.Clicked += Kustuta_btn_Clicked;
             lisa_btn = new Button
             {
-                Text = "Lisa telefon"
+                Text = "Lisa riik"
             };
             lisa_btn.Clicked += Lisa_btn_Clicked;
             list = new ListView
@@ -64,12 +64,25 @@ namespace Elemendide_App
             this.Content = new StackLayout
             {
                 Children = {
-                    lbl_list, list/*,Kustuta_btn,lisa_btn*/ }
+                    lbl_list, list,Kustuta_btn,lisa_btn }
             };
         }
 
         private async void Lisa_btn_Clicked(object sender, EventArgs e)
         {
+            string Nimetus = await DisplayPromptAsync("Millise riigi soovite lisada?", "kirjuta siia:", keyboard: Keyboard.Text);
+            string riik = await DisplayPromptAsync("Mis pealinn see on?", "kirjuta siia:", keyboard: Keyboard.Text);
+            string elaniku = await DisplayPromptAsync("Kui palju inimesi seal elab?", "kirjuta siia:", keyboard: Keyboard.Telephone);
+            string pilt = await DisplayPromptAsync("kirjuta lipu linki et saaks foto", "kirjuta siia:", keyboard: Keyboard.Text);
+
+            if (Nimetus == "" || riik == "" || elaniku == "" || pilt == "") return;
+            riigid newest = new riigid { Nimetus = Nimetus, Pealinn = riik, Elanikkond = elaniku, Pilt = pilt };
+            foreach (riigid thing in riigi)
+            {
+                if (thing.Nimetus == newest.Nimetus)
+                    return;
+            }
+            riigi.Add(item: newest);
         }
 
 
